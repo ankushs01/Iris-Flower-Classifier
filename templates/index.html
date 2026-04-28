@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iris Oracle — Species Classifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Decorative blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- ── HERO ─────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-badge">🌿 Machine Learning · Botanical Edition</div>
+    <h1 class="hero-title">Iris <em>Oracle</em></h1>
+    <p class="hero-sub">Enter four measurements — sepal & petal length and width — and our model will identify the iris species with quiet confidence.</p>
+  </header>
+
+  <!-- ── MAIN CONTENT ──────────────────────────────── -->
+  <main class="container">
+
+    <!-- Left panel: inputs -->
+    <section class="panel input-panel" id="input-panel">
+
+      <!-- Manual form -->
+      <div class="panel-header">
+        <span class="panel-icon">✦</span>
+        <h2>Manual Entry</h2>
+      </div>
+
+      <form id="predict-form" onsubmit="return false">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="sepal_length">Sepal Length <span class="unit">cm</span></label>
+            <div class="input-wrap">
+              <input type="number" id="sepal_length" name="sepal_length" step="0.1" min="0" max="20" placeholder="e.g. 5.1" required />
+              <span class="input-icon">📏</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sepal_width">Sepal Width <span class="unit">cm</span></label>
+            <div class="input-wrap">
+              <input type="number" id="sepal_width" name="sepal_width" step="0.1" min="0" max="20" placeholder="e.g. 3.5" required />
+              <span class="input-icon">📐</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="petal_length">Petal Length <span class="unit">cm</span></label>
+            <div class="input-wrap">
+              <input type="number" id="petal_length" name="petal_length" step="0.1" min="0" max="20" placeholder="e.g. 1.4" required />
+              <span class="input-icon">🌱</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="petal_width">Petal Width <span class="unit">cm</span></label>
+            <div class="input-wrap">
+              <input type="number" id="petal_width" name="petal_width" step="0.1" min="0" max="20" placeholder="e.g. 0.2" required />
+              <span class="input-icon">🍃</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit" id="predict-btn" onclick="predictManual()">
+          <span class="btn-text">Identify Species</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider"><span>or upload a CSV</span></div>
+
+      <!-- CSV upload -->
+      <div class="panel-header">
+        <span class="panel-icon">⬆</span>
+        <h2>Batch via CSV</h2>
+      </div>
+      <p class="hint">Columns required (in order): <code>sepal length, sepal width, petal length, petal width</code></p>
+
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="csv-file" accept=".csv" />
+        <div class="drop-content">
+          <div class="drop-icon">📂</div>
+          <p class="drop-label">Drop your CSV here or <strong>browse</strong></p>
+          <p class="drop-sub" id="file-name-display">No file selected</p>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary" id="csv-btn" onclick="predictCSV()" disabled>
+        <span class="btn-text">Run Batch Prediction</span>
+        <span class="btn-icon">⚡</span>
+      </button>
+
+      <div class="error-msg" id="error-msg"></div>
+    </section>
+
+    <!-- Right panel: results -->
+    <section class="panel result-panel" id="result-panel">
+      <div class="result-empty" id="result-empty">
+        <div class="empty-flower">🌸</div>
+        <p>Your prediction will<br/>blossom here</p>
+      </div>
+
+      <!-- Single result -->
+      <div class="result-card" id="result-card" style="display:none">
+        <div class="result-header" id="result-header">
+          <span class="result-emoji" id="result-emoji"></span>
+          <div>
+            <p class="result-label">Identified Species</p>
+            <h2 class="result-name" id="result-name"></h2>
+          </div>
+        </div>
+        <p class="result-desc" id="result-desc"></p>
+
+        <div class="result-facts" id="result-facts"></div>
+
+        <div class="proba-section" id="proba-section" style="display:none">
+          <p class="proba-title">Confidence breakdown</p>
+          <div id="proba-bars"></div>
+        </div>
+      </div>
+
+      <!-- Batch results -->
+      <div class="batch-results" id="batch-results" style="display:none">
+        <div class="batch-header">
+          <h3>Batch Results</h3>
+          <span class="batch-count" id="batch-count"></span>
+        </div>
+        <div class="batch-list" id="batch-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ────────────────────────────────────── -->
+  <footer class="footer">
+    <p>Powered by a joblib-trained classifier &nbsp;·&nbsp; Iris Dataset &nbsp;·&nbsp; Built with Flask 🌿</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
