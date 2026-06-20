@@ -174,6 +174,11 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
+## Credit
+If you use this project or build on it, a mention or link back is appreciated — not legally required, but it makes my day. 🙂
+
+---
+
 ## ⭐ Support
 
 If you found this project useful:
