@@ -170,7 +170,7 @@ This project uses the classic Iris dataset and applies supervised machine learni
 
 ## 📜 License
 
-This project is open-source and available for educational and portfolio purposes.
+This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
